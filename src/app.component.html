@@ -1,0 +1,65 @@
+<main class="min-h-screen bg-gray-900 p-4 sm:p-6 lg:p-8">
+  <div class="max-w-4xl mx-auto">
+    <header class="text-center mb-10">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600">
+        Sleep Quality Visualizer
+      </h1>
+      <p class="mt-2 text-lg text-gray-400">
+        Unlock better sleep with AI-powered analysis and visualization.
+      </p>
+    </header>
+
+    <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl shadow-indigo-900/20 p-6 sm:p-8 border border-gray-700">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div>
+          <label for="bedtime" class="block mb-2 text-sm font-medium text-gray-300">Bedtime</label>
+          <input type="time" id="bedtime" [(ngModel)]="bedtime" class="w-full bg-gray-700 border border-gray-600 text-gray-100 rounded-lg p-2.5 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+          <label for="wakeup" class="block mb-2 text-sm font-medium text-gray-300">Wake-up Time</label>
+          <input type="time" id="wakeup" [(ngModel)]="wakeupTime" class="w-full bg-gray-700 border border-gray-600 text-gray-100 rounded-lg p-2.5 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+          <label for="disturbances" class="block mb-2 text-sm font-medium text-gray-300">Disturbances</label>
+          <input type="number" id="disturbances" [(ngModel)]="disturbances" min="0" class="w-full bg-gray-700 border border-gray-600 text-gray-100 rounded-lg p-2.5 focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+      </div>
+
+      <button (click)="analyzeSleep()" [disabled]="!isFormValid() || isLoading()" class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-lg px-5 py-3 text-center transition-all duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center">
+        @if (isLoading()) {
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Analyzing...
+        } @else {
+          Analyze My Sleep
+        }
+      </button>
+    </div>
+
+    @if (error()) {
+      <div class="mt-6 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded-lg text-center">
+        {{ error() }}
+      </div>
+    }
+
+    @if (submittedData(); as data) {
+      <div class="mt-10 space-y-8">
+        <section class="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-700">
+          <h2 class="text-2xl font-bold text-gray-100 mb-4">Sleep Visualization</h2>
+          <app-sleep-chart [data]="data"></app-sleep-chart>
+        </section>
+
+        <section class="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-700">
+          <h2 class="text-2xl font-bold text-gray-100 mb-4">AI-Powered Analysis</h2>
+          <div class="prose prose-invert prose-lg text-gray-300 leading-relaxed" [innerHTML]="formatAnalysis(analysis())"></div>
+        </section>
+      </div>
+    }
+  </div>
+
+  <footer class="text-center mt-12 text-gray-500 text-sm">
+    <p>Powered by Angular and Google Gemini</p>
+  </footer>
+</main>

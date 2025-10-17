@@ -1,0 +1,5 @@
+{
+  "name": "Sleep Quality Visualizer",
+  "description": "An application to track and analyze your sleep patterns with AI-powered insights. Input your sleep data to visualize your sleep cycle and receive personalized advice to improve your rest.",
+  "requestFramePermissions": []
+}
